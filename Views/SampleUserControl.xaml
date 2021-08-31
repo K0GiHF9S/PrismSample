@@ -1,0 +1,55 @@
+﻿<UserControl x:Class="PrismSample.Views.SampleUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/"
+			 xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+			 xmlns:viewmodels="clr-namespace:PrismSample.ViewModels"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="d"
+			 d:DataContext="{d:DesignInstance viewmodels:SampleUserControlViewModel}">
+	<md:DialogHost
+		VerticalAlignment="Center"
+        IsOpen="{Binding IsSample4DialogOpen}"
+        OverlayBackground="{DynamicResource PrimaryHueDarkBrush}"
+        DialogTheme="Inherit">
+		<Border
+			BorderThickness="0"
+            BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+            MinWidth="256"
+            MinHeight="256"
+            ClipToBounds="True">
+			<Button
+				HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Command="{Binding OpenSample4DialogCommand}"
+                Content="RUN"/>
+		</Border>
+		<md:DialogHost.DialogContent>
+			<Grid Margin="16">
+				<Grid.RowDefinitions>
+					<RowDefinition />
+					<RowDefinition />
+				</Grid.RowDefinitions>
+				<TextBox md:HintAssist.Hint="Name"
+                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                Margin="0 6 0 0"
+                FontSize="18" Grid.Row="0"
+                />
+				<StackPanel Orientation="Horizontal" Grid.Row="1"
+                Margin="0 16 0 0">
+					<ProgressBar Width="24" Height="24" Margin="16"
+						 Style="{DynamicResource MaterialDesignCircularProgressBar}"
+						 IsIndeterminate="True"
+						 Value="33"/>
+					<Button IsCancel="True"
+						Margin="8 0 0 0"
+						Style="{StaticResource MaterialDesignFlatButton}"
+						Command="{Binding CancelSample4DialogCommand}">
+						CANCEL
+					</Button>
+				</StackPanel>
+			</Grid>
+		</md:DialogHost.DialogContent>
+	</md:DialogHost>
+</UserControl>

@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>PrismSample</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="LivetCask.Behaviors" Version="3.2.3.2" />
+    <PackageReference Include="MahApps.Metro" Version="2.4.7" />
+    <PackageReference Include="MahApps.Metro.IconPacks" Version="4.8.0" />
+    <PackageReference Include="MaterialDesignThemes.MahApps" Version="0.1.7" />
+    <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
+    <PackageReference Include="ReactiveProperty" Version="7.12.0" />
+  </ItemGroup>
+</Project>
