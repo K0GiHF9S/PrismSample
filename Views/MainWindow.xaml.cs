@@ -9,10 +9,7 @@ namespace PrismSample.Views
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
+        public MainWindow() => InitializeComponent();
 
         ~MainWindow() => Console.WriteLine($"{GetType().Name}");
     }

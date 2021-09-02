@@ -1,4 +1,6 @@
 ﻿using Prism.Ioc;
+using Prism.Regions;
+using PrismSample.Services;
 using PrismSample.Views;
 using System.Windows;
 
@@ -16,7 +18,19 @@ namespace PrismSample
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterForNavigation<SampleUserControl>();
+            containerRegistry.Register<IDialogHostService, DialogHostService>();
+
+            containerRegistry.RegisterDialog<ExecutingDialog>();
+            containerRegistry.RegisterDialog<MaterialDialog>();
         }
+
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+
+            var region_manager = Container.Resolve<IRegionManager>();
+            region_manager.RegisterViewWithRegion<SamplePanel>("SampleRegion");
+        }
+
     }
 }

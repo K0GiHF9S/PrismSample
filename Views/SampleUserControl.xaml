@@ -8,9 +8,17 @@
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 mc:Ignorable="d"
 			 d:DataContext="{d:DesignInstance viewmodels:SampleUserControlViewModel}">
-	<md:DialogHost
-		VerticalAlignment="Center"
-        IsOpen="{Binding IsSample4DialogOpen}"
+	<md:DialogHost Identifier="MessageDialogHost">
+		<StackPanel>
+			<Button Content="{md:PackIcon Kind=Stop}" Command="{Binding StopCommand}" />
+			<Button Command="{Binding StartCommand}">
+					<md:PackIcon Kind="Play" />
+			</Button>
+		</StackPanel>
+	</md:DialogHost>
+	<!--<md:DialogHost-->
+		<!--VerticalAlignment="Center"
+        IsOpen="{Binding IsSample4DialogOpen.Value}"
         OverlayBackground="{DynamicResource PrimaryHueDarkBrush}"
         DialogTheme="Inherit">
 		<Border
@@ -51,5 +59,5 @@
 				</StackPanel>
 			</Grid>
 		</md:DialogHost.DialogContent>
-	</md:DialogHost>
+	</md:DialogHost>-->
 </UserControl>

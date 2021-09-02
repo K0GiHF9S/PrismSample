@@ -10,10 +10,10 @@ namespace PrismSample.ViewModels
 {
     public class ViewModelBase : BindableBase, IDisposable, IDestructible
     {
-        protected CompositeDisposable Disposables = new CompositeDisposable();
+        protected CompositeDisposable Disposables = new();
 
         private bool disposedValue;
-        private readonly IRegionManager regionManager = null;
+        private readonly IRegionManager regionManager;
 
         protected virtual void Dispose(bool disposing)
         {
