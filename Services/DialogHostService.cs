@@ -21,23 +21,39 @@ namespace PrismSample.Services
             this.containerProvider = containerProvider;
         }
 
-        public async void ShowDialog(string name, IDialogParameters parameters, Action<IDialogResult> callback, string identifier)
+        public void ShowDialog(string name, IDialogParameters parameters, Action<IDialogResult> callback, string identifier)
         {
+            if (DialogHost.IsDialogOpen(identifier))
+            {
+                return;
+            }
             var view = containerProvider.Resolve<object>(name);
             var dialog_aware = (view as FrameworkElement)?.DataContext as IDialogAware;
 
             dialog_aware.RequestClose += p =>
             {
+                DialogHost.Close(identifier, p);
+            };
+
+            DialogOpenedEventHandler opend_event = (_, _) =>
+            {
+                dialog_aware.OnDialogOpened(parameters ?? new DialogParameters());
+            };
+
+            DialogClosingEventHandler closing_event = (o, args) =>
+            {
                 if (dialog_aware.CanCloseDialog())
                 {
-                    DialogHost.Close(identifier);
                     dialog_aware.OnDialogClosed();
-                    callback(p ?? new DialogResult());
+                    callback?.Invoke((args.Parameter as DialogResult) ?? new DialogResult());
+                }
+                else
+                {
+                    args.Cancel();
                 }
             };
-            var task = DialogHost.Show(view, identifier);
-            dialog_aware.OnDialogOpened(parameters ?? new DialogParameters());
-            await task;
+
+            _ = DialogHost.Show(view, identifier, opend_event, closing_event).ConfigureAwait(false);
         }
     }
 }

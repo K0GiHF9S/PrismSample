@@ -26,7 +26,10 @@ namespace PrismSample.ViewModels
                 .AddTo(Disposables);
 
             OkCommand = new ReactiveCommand()
-                .WithSubscribe(OnRequestClose)
+                .WithSubscribe(() => OnRequestClose(ButtonResult.OK))
+                .AddTo(Disposables);
+            CancelCommand = new ReactiveCommand()
+                .WithSubscribe(() => OnRequestClose(ButtonResult.Cancel))
                 .AddTo(Disposables);
         }
 
@@ -34,9 +37,9 @@ namespace PrismSample.ViewModels
 
         public void OnDialogClosed() => Dispose();
 
-        private void OnRequestClose()
+        private void OnRequestClose(ButtonResult buttonResult)
         {
-            RequestClose?.Invoke(null);
+            RequestClose?.Invoke(new DialogResult(buttonResult));
         }
 
         public void OnDialogOpened(IDialogParameters parameters)

@@ -18,6 +18,11 @@ namespace PrismSample.ViewModels
             YesButton = new ReactiveCommand()
                 .WithSubscribe(() => OnRequestClose())
                 .AddTo(Disposables);
+            RequestClose += ExecutingDialogViewModel_RequestClose;
+        }
+
+        private void ExecutingDialogViewModel_RequestClose(IDialogResult obj)
+        {
         }
 
         public string Title => "sample";
@@ -30,7 +35,7 @@ namespace PrismSample.ViewModels
 
         private void OnRequestClose()
         {
-            RequestClose?.Invoke(null);
+            RequestClose.Invoke(null);
         }
 
         public void OnDialogOpened(IDialogParameters parameters) { }

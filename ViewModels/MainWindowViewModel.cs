@@ -1,5 +1,7 @@
 ﻿using Prism.Mvvm;
 using Prism.Regions;
+using Prism.Services.Dialogs;
+using PrismSample.Services;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
@@ -12,12 +14,20 @@ namespace PrismSample.ViewModels
 
         public ReactiveCommand ConfirmClose { get; }
 
-        public MainWindowViewModel(IRegionManager regionManager) : base(regionManager)
+        public ReactivePropertySlim<bool> CanClose { get; }
+
+        public MainWindowViewModel(IRegionManager regionManager, IDialogHostService dialogHostService) : base(regionManager)
         {
             regionManager.RegisterViewWithRegion<Views.SampleUserControl>("ContentRegion");
 
+            CanClose = new ReactivePropertySlim<bool>()
+                .AddTo(Disposables);
+
             ConfirmClose = new ReactiveCommand()
-                .WithSubscribe(()=> System.Windows.MessageBox.Show("test"))
+                .WithSubscribe(() => dialogHostService.ShowDialog(nameof(Views.MaterialDialog), null, result =>
+                {
+                    CanClose.Value = result.Result == ButtonResult.OK;
+                }, "RootDialog"))
                 .AddTo(Disposables);
         }
     }

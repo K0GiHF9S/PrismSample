@@ -15,7 +15,7 @@
 		Title="{Binding Title.Value}" Style="{StaticResource WindowStyle}" Height="350" Width="525" >
 	<i:Interaction.Behaviors>
 		<l:WindowCloseCancelBehavior
-			CanClose="True"
+			CanClose="{Binding CanClose.Value}"
 			CloseCanceledCallbackCommand="{Binding ConfirmClose}"
 			/>
 	</i:Interaction.Behaviors>
@@ -24,24 +24,24 @@
 			<l:DataContextDisposeAction />
 		</i:EventTrigger>
 	</i:Interaction.Triggers>
-	
 	<Grid>
 		<md:DialogHost
-        Identifier="RootDialog"
-        DialogTheme="Inherit"
-        SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
-
+            Identifier="RootDialog"
+            DialogTheme="Inherit"
+			CloseOnClickAway="True"
+            SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}"
+			>
 			<md:DrawerHost
-            IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
+                IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
 				<md:DrawerHost.LeftDrawerContent>
 					<DockPanel MinWidth="220">
 						<ToggleButton 
-                        Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
-                        DockPanel.Dock="Top"
-                        HorizontalAlignment="Right" 
-                        Margin="16"
-                        IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}"/>
-
+                            Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
+                            DockPanel.Dock="Top"
+                            HorizontalAlignment="Right" 
+                            Margin="16"
+                            IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}"
+							/>
 						<TextBox 
                         x:Name="DemoItemsSearchBox"
                         Text="{Binding SearchKeyword, UpdateSourceTrigger=PropertyChanged}"
