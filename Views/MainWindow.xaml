@@ -11,6 +11,8 @@
 		xmlns:viewmodels="clr-namespace:PrismSample.ViewModels"
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:behaviors="clr-namespace:PrismSample.Behaviors"
+		xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+		Dialog:DialogParticipation.Register="{Binding}"
 		mc:Ignorable="d"
 		d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowViewModel}"
 		Title="{Binding Title.Value}" Style="{StaticResource WindowStyle}" Height="350" Width="525" >
@@ -24,6 +26,15 @@
 			<l:DataContextDisposeAction />
 		</i:EventTrigger>
 	</i:Interaction.Triggers>
+	<mah:MetroWindow.LeftWindowCommands>
+		<mah:WindowCommands>
+			<ToggleButton 
+                Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
+				Height="32"
+                IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}"
+				/>
+		</mah:WindowCommands>
+	</mah:MetroWindow.LeftWindowCommands>
 	<Grid>
 		<md:DialogHost
             Identifier="RootDialog"
@@ -53,16 +64,16 @@
                         md:TextFieldAssist.HasClearButton="True"
                         md:TextFieldAssist.HasOutlinedTextField="True"
                         md:TextFieldAssist.DecorationVisibility="Collapsed"
-                        md:TextFieldAssist.TextFieldCornerRadius="4"/>
+                        md:TextFieldAssist.TextFieldCornerRadius="4" Cursor="IBeam"/>
 
 						<ListBox 
-                        x:Name="DemoItemsListBox" 
-                        Margin="0 16 0 16"
-                        SelectedIndex="{Binding SelectedIndex}"
-                        SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}"
-                        ItemsSource="{Binding DemoItems}"
-                        AutomationProperties.Name="DemoPagesListBox"
-                        >
+							x:Name="DemoItemsListBox" 
+							Margin="0 16 0 16"
+							SelectedIndex="{Binding SelectedIndex}"
+							SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}"
+							ItemsSource="{Binding DemoItems}"
+							AutomationProperties.Name="DemoPagesListBox"
+							>
 							<ListBox.Resources>
 								<Style TargetType="ScrollBar" BasedOn="{StaticResource MaterialDesignScrollBarMinimal}"/>
 							</ListBox.Resources>
@@ -77,112 +88,94 @@
 
 				<DockPanel>
 					<md:ColorZone
-                    Padding="16"
-                    md:ShadowAssist.ShadowDepth="Depth2"
-                    Mode="PrimaryMid"
-                    DockPanel.Dock="Top">
+						Padding="16"
+						md:ShadowAssist.ShadowDepth="Depth2"
+						Mode="PrimaryMid"
+						DockPanel.Dock="Top">
 						<DockPanel>
 							<StackPanel Orientation="Horizontal">
 								<ToggleButton
-                                x:Name="MenuToggleButton"
-                                Style="{StaticResource MaterialDesignHamburgerToggleButton}"
-                                IsChecked="False"
-                                AutomationProperties.Name="HamburgerToggleButton"/>
-
-								<Button
-                                Margin="24,0,0,0"
-                                ToolTip="Previous Item"
-                                Command="{Binding MovePrevCommand}"
-                                Content="{md:PackIcon Kind=ArrowLeft, Size=24}"
-                                Style="{DynamicResource MaterialDesignToolButton}"
-                                Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}"
-                                md:RippleAssist.Feedback="{Binding RelativeSource={RelativeSource Self}, Path=Foreground, Converter={StaticResource BrushRoundConverter}}"/>
-
-								<Button 
-                                Margin="16,0,0,0"
-                                ToolTip="Next Item"
-                                Command="{Binding MoveNextCommand}"
-                                Content="{md:PackIcon Kind=ArrowRight, Size=24}"
-                                Style="{DynamicResource MaterialDesignToolButton}"
-                                Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}"
-                                md:RippleAssist.Feedback="{Binding RelativeSource={RelativeSource Self}, Path=Foreground, Converter={StaticResource BrushRoundConverter}}"/>
-
-								<Button
-                                Margin="16,0,0,0"
-                                ToolTip="Home"
-                                Command="{Binding HomeCommand}"
-                                Content="{md:PackIcon Kind=Home, Size=24}"
-                                Style="{DynamicResource MaterialDesignToolButton}"
-                                Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}"
-                                md:RippleAssist.Feedback="{Binding RelativeSource={RelativeSource Self}, Path=Foreground, Converter={StaticResource BrushRoundConverter}}"/>
+									x:Name="MenuToggleButton"
+									Style="{StaticResource MaterialDesignHamburgerToggleButton}"
+									IsChecked="False"
+									AutomationProperties.Name="HamburgerToggleButton"/>
 							</StackPanel>
 
-							<md:PopupBox
-                            DockPanel.Dock="Right"
-                            PlacementMode="BottomAndAlignRightEdges"
-                            StaysOpen="False">
-
-								<StackPanel>
-									<Grid Margin="10">
-										<Grid.ColumnDefinitions>
-											<ColumnDefinition Width="Auto" />
-											<ColumnDefinition Width="Auto" />
-											<ColumnDefinition Width="Auto" />
-										</Grid.ColumnDefinitions>
-										<Grid.RowDefinitions>
-											<RowDefinition />
-											<RowDefinition />
-										</Grid.RowDefinitions>
-										<TextBlock
-                                        Text="Light"
-                                        Margin="0 0 10 0"/>
-										<ToggleButton
-                                        x:Name="DarkModeToggleButton"
-                                        Grid.Column="1"/>
-										<TextBlock
-                                        Text="Dark"
-                                        Margin="10 0 0 0"
-                                        Grid.Column="2"/>
-										<TextBlock
-                                        Text="Enabled"
-                                        Margin="0 10 10 0"
-                                        Grid.Row="1"/>
-										<ToggleButton
-                                        x:Name="ControlsEnabledToggleButton"
-                                        Margin="0 10 0 0"
-                                        IsChecked="{Binding ControlsEnabled}"
-                                        Grid.Row="1"
-                                        Grid.Column="1"/>
-									</Grid>
-
-									<Separator/>
-
+							<md:Flipper
+								IsFlipped="{Binding IsBusy.Value, Mode=OneWay}"
+								Style="{StaticResource MaterialDesignCardFlipper}"
+								>
+								<md:Flipper.FrontContent>
 									<Button
-                                    Content="Hello World"
-                                    />
-
+										Command="{Binding BusyCommand}"
+										Style="{StaticResource MaterialDesignIconButton}"
+										Width="100"
+										Height="100"
+										>
+										<md:PackIcon
+											Kind="Play"
+											Width="100"
+											Height="100"
+											/>
+									</Button>
+								</md:Flipper.FrontContent>
+								<md:Flipper.BackContent>
 									<Button
-                                    Content="Nice Popup"
-                                    />
+										Command="{Binding StopCommand}"
+										Style="{StaticResource MaterialDesignIconButton}"
+										Width="100"
+										Height="100"
+										>
+										<md:PackIcon
+											Kind="Stop"
+											Width="100"
+											Height="100"
+											/>
+									</Button>
+								</md:Flipper.BackContent>
+							</md:Flipper>
+							<ToggleButton
+								Style="{StaticResource MaterialDesignActionLightToggleButton}"
+								IsChecked="{Binding IsBusy.Value, Mode=OneWay}" Cursor="Hand"
+								Width="100"
+								Height="100"
+								
+								>
+								<md:PackIcon
+									Kind="Play"
+									Width="100"
+									Height="100"
+									/>
+								<md:ToggleButtonAssist.OnContent>
+									<md:PackIcon
+										Kind="Stop"
+										Width="100"
+										Height="100"
+										/>
+								</md:ToggleButtonAssist.OnContent>
+								<i:Interaction.Triggers>
+									<i:EventTrigger EventName="Checked">
+										<i:InvokeCommandAction Command="{Binding BusyCommand}" />
+									</i:EventTrigger>
+									<i:EventTrigger EventName="Unchecked">
+										<i:InvokeCommandAction Command="{Binding StopCommand}" />
+									</i:EventTrigger>
+								</i:Interaction.Triggers>
+							</ToggleButton>
+							<mah:Tile
+								Title="sample"
+								HorizontalTitleAlignment="Right"
+								mah:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
+								Background="Orange"
+								>
+								<md:PackIcon Kind="Email" Width="Auto" Height="Auto" Margin="40" />
+							</mah:Tile>
+							<ComboBox
+								Style="{StaticResource MaterialDesignOutlinedComboBox}"
+								ItemsSource="{Binding SampleList}"
+								SelectedItem="{Binding SelectedSample.Value}"
+								/>
 
-									<Button
-                                    Content="Can't Touch This"
-                                    IsEnabled="False"/>
-
-									<Separator/>
-
-									<Button
-                                    Content="Goodbye"
-                                    />
-								</StackPanel>
-							</md:PopupBox>
-
-							<TextBlock
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            FontSize="22"
-                            AutomationProperties.Name="Material Design In XAML Toolkit"
-                            Text="Material Design In XAML Toolkit"/>
 						</DockPanel>
 					</md:ColorZone>
 

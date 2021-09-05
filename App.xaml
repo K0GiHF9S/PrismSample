@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:PrismSample"
 			 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+			 xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:prism="http://prismlibrary.com/" >
     <Application.Resources>
 		<ResourceDictionary>
@@ -21,8 +22,9 @@
 				<!-- Material Design: MahApps Compatibility -->
 				<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Fonts.xaml" />
 				<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Flyout.xaml" />
+				
+				<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Flipper.xaml" />
 			</ResourceDictionary.MergedDictionaries>
-
 			<!-- MahApps Brushes -->
 			<SolidColorBrush x:Key="MahApps.Brushes.Highlight" Color="{DynamicResource Primary700}"/>
 			<SolidColorBrush x:Key="MahApps.Brushes.AccentBase" Color="{DynamicResource Primary600}" />

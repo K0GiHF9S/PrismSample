@@ -35,20 +35,17 @@ namespace PrismSample.Behaviors
                 return;
             }
             e.Cancel = true;
-            Action<bool> confirm_callback = ConfirmCallback;
-            if (ClosingCallbackCommand.CanExecute(confirm_callback))
+            Action close_callback = CloseCallback;
+            if (ClosingCallbackCommand.CanExecute(close_callback))
             {
-                ClosingCallbackCommand.Execute(confirm_callback);
+                ClosingCallbackCommand.Execute(close_callback);
             }
         }
 
-        private void ConfirmCallback(bool canClose)
+        private void CloseCallback()
         {
-            this.canClose = canClose;
-            if (canClose)
-            {
-                AssociatedObject.Close();
-            }
+            this.canClose = true;
+            AssociatedObject.Close();
         }
     }
 }
