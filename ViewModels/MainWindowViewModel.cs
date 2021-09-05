@@ -5,6 +5,7 @@ using PrismSample.Services;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
+using System.ComponentModel;
 
 namespace PrismSample.ViewModels
 {
@@ -12,22 +13,22 @@ namespace PrismSample.ViewModels
     {
         public ReactivePropertySlim<string> Title { get; } = new("Prism Application");
 
-        public ReactiveCommand ConfirmClose { get; }
+        public AsyncReactiveCommand<Action<bool>> ConfirmClose { get; }
 
-        public ReactivePropertySlim<bool> CanClose { get; }
-
-        public MainWindowViewModel(IRegionManager regionManager, IDialogHostService dialogHostService) : base(regionManager)
+        public MainWindowViewModel(IRegionManager regionManager, IDialogHostService dialogHostService, IDialogService s) : base(regionManager)
         {
             regionManager.RegisterViewWithRegion<Views.SampleUserControl>("ContentRegion");
 
-            CanClose = new ReactivePropertySlim<bool>()
-                .AddTo(Disposables);
-
-            ConfirmClose = new ReactiveCommand()
-                .WithSubscribe(() => dialogHostService.ShowDialog(nameof(Views.MaterialDialog), null, result =>
+            ConfirmClose = new AsyncReactiveCommand<Action<bool>>()
+                .WithSubscribe(async callback =>
                 {
-                    CanClose.Value = result.Result == ButtonResult.OK;
-                }, "RootDialog"))
+                    await dialogHostService.ShowDialog(nameof(Views.MaterialDialog), null,
+                        result =>
+                        {
+                            callback(result.Result == ButtonResult.OK);
+                        }, "RootDialog").ConfigureAwait(false);
+                }
+                )
                 .AddTo(Disposables);
         }
     }

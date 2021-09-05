@@ -10,13 +10,13 @@
 		xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
 		xmlns:viewmodels="clr-namespace:PrismSample.ViewModels"
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:behaviors="clr-namespace:PrismSample.Behaviors"
 		mc:Ignorable="d"
 		d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowViewModel}"
 		Title="{Binding Title.Value}" Style="{StaticResource WindowStyle}" Height="350" Width="525" >
 	<i:Interaction.Behaviors>
-		<l:WindowCloseCancelBehavior
-			CanClose="{Binding CanClose.Value}"
-			CloseCanceledCallbackCommand="{Binding ConfirmClose}"
+		<behaviors:WindowClosingBehavior
+			ClosingCallbackCommand="{Binding ConfirmClose}"
 			/>
 	</i:Interaction.Behaviors>
 	<i:Interaction.Triggers>

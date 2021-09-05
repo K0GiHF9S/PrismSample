@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
+#nullable enable
+
 namespace PrismSample.Services
 {
     public class DialogHostService : IDialogHostService
@@ -21,18 +23,22 @@ namespace PrismSample.Services
             this.containerProvider = containerProvider;
         }
 
-        public void ShowDialog(string name, IDialogParameters parameters, Action<IDialogResult> callback, string identifier)
+        public async Task ShowDialog(string name, IDialogParameters? parameters, Action<IDialogResult>? callback, string? windowName)
         {
-            if (DialogHost.IsDialogOpen(identifier))
+            if (windowName is not null && DialogHost.IsDialogOpen(windowName))
             {
                 return;
             }
             var view = containerProvider.Resolve<object>(name);
             var dialog_aware = (view as FrameworkElement)?.DataContext as IDialogAware;
+            if (dialog_aware is null)
+            {
+                return;
+            }
 
             dialog_aware.RequestClose += p =>
             {
-                DialogHost.Close(identifier, p);
+                DialogHost.Close(windowName, p);
             };
 
             DialogOpenedEventHandler opend_event = (_, _) =>
@@ -53,7 +59,7 @@ namespace PrismSample.Services
                 }
             };
 
-            _ = DialogHost.Show(view, identifier, opend_event, closing_event).ConfigureAwait(false);
+            _ = await DialogHost.Show(view, windowName, opend_event, closing_event).ConfigureAwait(false);
         }
     }
 }
